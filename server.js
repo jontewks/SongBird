@@ -3,7 +3,7 @@ var request = require('request');
 var authToken = require('./authToken.js');
 
 var app = express();
-var port = 8080;
+var port = process.env.PORT || 8080;
 
 var accessToken = '';
 
