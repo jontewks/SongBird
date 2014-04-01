@@ -35,12 +35,16 @@ app.post('/', function(req, res) {
         'Authorization': 'Bearer ' + accessToken
       }
     }, function(err, response, body) {
-      var tweetsObj = JSON.parse(response.body).statuses
-      for (var i = 0; i < tweetsObj.length; i++) {
-        if (tweetsObj[i].entities.media[0]) {
-          console.log(tweetsObj[i].entities.media[0].media_url);
+      var results = [];
+      var tweetsObj = JSON.parse(response.body).statuses;
+      if (tweetsObj) {
+        for (var i = 0; i < tweetsObj.length; i++) {
+          if (tweetsObj[i].entities.media) {
+            results.push(tweetsObj[i].entities.media[0].media_url);
+          }
         }
       }
+      res.send(results);
     });
   });
 });
