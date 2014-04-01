@@ -27,8 +27,21 @@ app.post('/', function(req, res) {
     body: 'grant_type=client_credentials'
   }, function(err, response, body) {
     accessToken = JSON.parse(response.body).access_token;
-    console.log(req._readableState.buffer.toString());
-    res.send();
+    var search = req._readableState.buffer.toString();
+    request({
+      url: 'https://api.twitter.com/1.1/search/tweets.json?q=%23' + search + '&src=typd&count=100&include_entities=true',
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    }, function(err, response, body) {
+      var tweetsObj = JSON.parse(response.body).statuses
+      for (var i = 0; i < tweetsObj.length; i++) {
+        if (tweetsObj[i].entities.media[0]) {
+          console.log(tweetsObj[i].entities.media[0].media_url);
+        }
+      }
+    });
   });
 });
 
