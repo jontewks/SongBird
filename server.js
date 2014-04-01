@@ -1,11 +1,11 @@
 var express = require('express');
 var request = require('request');
-var token = require('./authToken.js');
+var authToken = require('./authToken.js');
 
 var app = express();
 var port = 8080;
 
-var token = '';
+var accessToken = '';
 
 app.configure(function() {
   app.use(express.static(__dirname + '/app'));
@@ -21,14 +21,14 @@ app.post('/', function(req, res) {
     url: 'https://api.twitter.com/oauth2/token',
     method: 'POST',
     headers: {
-      'Authorization': token.token,
+      'Authorization': authToken.token,
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     },
     body: 'grant_type=client_credentials'
-  }, function(err, response, bod) {
-    token = JSON.parse(response.body).access_token;
-    res.set('Access-Control-Allow-Origin', '*')
-    res.send('HooHoooooo');
+  }, function(err, response, body) {
+    accessToken = JSON.parse(response.body).access_token;
+    console.log(req._readableState.buffer.toString());
+    res.send();
   });
 });
 

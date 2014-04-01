@@ -10,8 +10,5 @@ app.controller('MainCtrl', function ($scope, $rootScope, $location) {
 });
 
 app.controller('SlideshowCtrl', function ($scope, $http, $rootScope) {
-  $http.post('http://localhost:8080/', $rootScope.searchTag)
-    .then(function() {
-      console.log('sent');
-    });
+  $http.post('http://localhost:8080/', $rootScope.searchTag);
 });
