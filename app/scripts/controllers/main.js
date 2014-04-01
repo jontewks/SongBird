@@ -13,6 +13,5 @@ app.controller('SlideshowCtrl', function ($scope, $http, $rootScope) {
   $http.post('http://localhost:8080/', $rootScope.searchTag)
     .then(function(res) {
       $scope.pics = res.data;
-      console.log($scope.pics);
     })
 });

@@ -1,3 +1,15 @@
-<ul> 
-  <li data-ng-repeat="pic in pics">{{ pic }}</li>
+<ul class="photos">
+  <div style="display: none" data-ng-repeat="pic in pics track by $index">
+    <img ng-src="{{ pic }}"></img>
+  </div>
 </ul>
+<script>
+  window.setInterval(function() { 
+    $('.photos > div:first')
+      .fadeOut(1000)
+      .next()
+      .fadeIn(1000)
+      .end()
+      .appendTo('.photos');
+    }, 3000);
+</script>
