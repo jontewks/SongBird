@@ -36,22 +36,25 @@ app.post('/', function(req, res) {
         'Authorization': 'Bearer ' + accessToken
       }
     }, function(err, response, body) {
-      var results = [];
       var tweetsObj = JSON.parse(response.body).statuses;
       if (tweetsObj) {
         for (var i = 0; i < tweetsObj.length; i++) {
           if (tweetsObj[i].entities.media) {
-            var tweet = new Tweet({
+            var tweet = new db.Tweet({
               tweetID: tweetsObj[i].id,
               media_url: tweetsObj[i].entities.media[0].media_url
             });
-
-            tweet.save(function(err) {
-              if (err) { res.send(500, err); }
-              res.send();
-            });
+            tweet.save();
           }
         }
+
+        db.Tweet.find().exec(function(err, results) {
+          var urlsArray = [];
+          for (var i = 0; i < results.length; i++) {
+            urlsArray.push(results[i].media_url);
+          };
+          res.send(urlsArray);
+        });
       }
     });
   });

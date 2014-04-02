@@ -3,10 +3,10 @@ var mongoose = require('mongoose');
 mongoURI = process.env.MONGOLAB_URI || 'localhost:27017';
 mongoose.connect(mongoURI);
 
-var db = mongoose.connection;
+exports.db = mongoose.connection;
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+exports.db.on('error', console.error.bind(console, 'connection error:'));
+exports.db.once('open', function() {
   console.log('Your prayers to the Mongod have been answered.');
 });
 
@@ -15,6 +15,4 @@ var tweetSchema = mongoose.Schema({
   media_url: { type: String, required: true, unique: true }
 });
 
-var Tweet = mongoose.model('Tweet', tweetSchema);
-
-module.exports = db;
+exports.Tweet = mongoose.model('Tweet', tweetSchema);
