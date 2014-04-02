@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var authToken = require('./authToken.js');
+var db = require('./dbconfig.js');
 
 var app = express();
 var port = process.env.PORT || 8080;
@@ -40,11 +41,18 @@ app.post('/', function(req, res) {
       if (tweetsObj) {
         for (var i = 0; i < tweetsObj.length; i++) {
           if (tweetsObj[i].entities.media) {
-            results.push(tweetsObj[i].entities.media[0].media_url);
+            var tweet = new Tweet({
+              tweetID: tweetsObj[i].id,
+              media_url: tweetsObj[i].entities.media[0].media_url
+            });
+
+            tweet.save(function(err) {
+              if (err) { res.send(500, err); }
+              res.send();
+            });
           }
         }
       }
-      res.send(results);
     });
   });
 });
