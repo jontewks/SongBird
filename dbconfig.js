@@ -12,7 +12,8 @@ exports.db.once('open', function() {
 
 var tweetSchema = mongoose.Schema({
   tweetID: { type: Number, required: true, unique: true },
-  media_url: { type: String, required: true, unique: true }
+  media_url: { type: String, required: true, unique: true },
+  hashtag: { type: String, required: true }
 });
 
 exports.Tweet = mongoose.model('Tweet', tweetSchema);

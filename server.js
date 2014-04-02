@@ -7,6 +7,7 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 var accessToken = '';
+var search;
 
 app.configure(function() {
   app.use(express.static(__dirname + '/app'));
@@ -28,7 +29,7 @@ app.post('/', function(req, res) {
     body: 'grant_type=client_credentials'
   }, function(err, response, body) {
     accessToken = JSON.parse(response.body).access_token;
-    var search = req._readableState.buffer.toString();
+    search = req._readableState.buffer.toString();
     request({
       url: 'https://api.twitter.com/1.1/search/tweets.json?q=%23' + search + '&src=typd&count=100&include_entities=true',
       method: 'GET',
@@ -42,22 +43,26 @@ app.post('/', function(req, res) {
           if (tweetsObj[i].entities.media) {
             var tweet = new db.Tweet({
               tweetID: tweetsObj[i].id,
-              media_url: tweetsObj[i].entities.media[0].media_url
+              media_url: tweetsObj[i].entities.media[0].media_url,
+              hashtag: search
             });
             tweet.save();
           }
         }
-
-        db.Tweet.find().exec(function(err, results) {
-          var urlsArray = [];
-          for (var i = 0; i < results.length; i++) {
-            urlsArray.push(results[i].media_url);
-          };
-          res.send(urlsArray);
-        });
       }
     });
   });
+
+  setTimeout(function() {
+    db.Tweet.find().where('hashtag', search).exec(function(err, results) {
+      var urlsArray = [];
+      for (var i = 0; i < results.length; i++) {
+        urlsArray.push(results[i].media_url);
+      };
+      console.log('found: ', urlsArray);
+      res.send(urlsArray);
+    });
+  }, 1000);
 });
 
 app.listen(port);
