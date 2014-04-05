@@ -1,6 +1,5 @@
 var express = require('express');
 var request = require('request');
-var authToken = require('./authToken.js');
 
 var app = express();
 var port = process.env.PORT || 8080;
@@ -21,7 +20,7 @@ app.post('/', function(req, res) {
     url: 'https://api.twitter.com/oauth2/token',
     method: 'POST',
     headers: {
-      'Authorization': authToken.token,
+      'Authorization': process.env.TOKEN,
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     },
     body: 'grant_type=client_credentials'
