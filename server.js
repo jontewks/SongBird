@@ -6,9 +6,7 @@ var port = process.env.PORT || 8080;
 
 var accessToken = '';
 
-app.configure(function() {
-  app.use(express.static(__dirname + '/app'));
-});
+app.use(express.static(__dirname + '/app'));
 
 app.get('/', function(req, res) {
   res.render('/views/main.html');
