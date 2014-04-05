@@ -12,7 +12,7 @@ app.controller('MainCtrl', function ($scope, $rootScope, $location) {
 app.controller('SlideshowCtrl', function ($scope, $http, $rootScope) {
   $http.post('http://songbird.azurewebsites.net/', $rootScope.searchTag)
     .then(function(res) {
-      console.log('response: ' + res);
+      console.log('response: ' + res.data);
       $scope.pics = res.data;
     })
 });
