@@ -9,8 +9,7 @@ var accessToken = '';
 app.use(express.static(__dirname + '/app'));
 
 app.get('/', function(req, res) {
-  res.render('/views/main.html');
-  console.log(process.env);
+  res.send(process.env);
 })
 
 app.post('/', function(req, res) {
