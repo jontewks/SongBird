@@ -1,5 +1,6 @@
 var express = require('express');
 var request = require('request');
+var auth = require('./authToken.js');
 
 var app = express();
 var port = process.env.PORT || 8080;
@@ -8,17 +9,13 @@ var accessToken = '';
 
 app.use(express.static(__dirname + '/app'));
 
-app.get('/', function(req, res) {
-  res.send(process.env);
-})
-
 app.post('/', function(req, res) {
   // Retrieve application level access token
   request({
     url: 'https://api.twitter.com/oauth2/token',
     method: 'POST',
     headers: {
-      'Authorization': process.env.TOKEN,
+      'Authorization': auth.token,
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     },
     body: 'grant_type=client_credentials'
