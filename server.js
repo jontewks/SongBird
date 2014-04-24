@@ -9,7 +9,8 @@ var accessToken = '';
 
 app.use(express.static(__dirname + '/app'));
 
-app.post('/', function(req, res) {
+app.post('/api', function(req, res) {
+  console.log('roger, checking...');
   // Retrieve application level access token
   request({
     url: 'https://api.twitter.com/oauth2/token',
@@ -38,6 +39,7 @@ app.post('/', function(req, res) {
           }
         }
       }
+      
       res.send(results);
     });
   });

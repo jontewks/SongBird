@@ -9,9 +9,13 @@ app.controller('MainCtrl', function ($scope, $rootScope, $location) {
   };
 });
 
-app.controller('SlideshowCtrl', function ($scope, $http, $rootScope) {
-  $http.post('http://localhost:8080', $rootScope.searchTag)
-    .then(function(res) {
-      $scope.pics = res.data;
-    })
+app.controller('SlideshowCtrl', function ($scope, $http, $rootScope, $interval) {
+  $scope.getPics = function() {
+    $http.post('/api', $rootScope.searchTag)
+      .then(function (res) {
+        $scope.pics = res.data;
+      });
+  };
+
+  $scope.getPics();
 });
